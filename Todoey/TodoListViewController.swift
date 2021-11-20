@@ -10,8 +10,15 @@ import UIKit
 class TodoListViewController: UITableViewController {
 
     var itemArray = ["Something", "do that", "do this"]
+    
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
+        
     }
 
     // Tableview DataSource Methods
@@ -41,7 +48,6 @@ class TodoListViewController: UITableViewController {
     }
     
     // add new items
-    
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
         var textField = UITextField()
@@ -52,6 +58,9 @@ class TodoListViewController: UITableViewController {
             // what will happen when the user clicks the add item butoon on our UIArlet
             
             self.itemArray.append(textField.text!) // text fields can never be nil - force unwraps
+            
+            self.defaults.setValue(self.itemArray, forKey: "TodoListArray")
+            
             self.tableView.reloadData()
         }
         
